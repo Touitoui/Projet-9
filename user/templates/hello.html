@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>{{ message }}{{request.user}}</p>
+    {% else %}
+        <a href="/login">Se connecter</a>
+        <a href="/signup ">S'inscrire</a>
+    {% endif %}
+{% endblock content %}

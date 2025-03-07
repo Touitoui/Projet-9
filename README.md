@@ -1,2 +1,5 @@
 # Projet-9
- Projet-9 Qpplicqtion Zeb Djqngo
+ Projet-9 Application Web Django
+
+
+python .\manage.py runserver
