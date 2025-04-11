@@ -16,14 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 import ticket.views
+import review.views
 import user.views
 
 urlpatterns = [
-    path('', user.views.hello),
-    path('login', user.views.login_page, name='login'),
+    path('', ticket.views.home),
+    path('login/', user.views.login_page, name='login'),
     path('logout/', user.views.logout_user, name='logout'),
     path('signup', user.views.signup_page, name='signup'),
     path('admin/', admin.site.urls),
-    path('hello/', ticket.views.hello),
+    path('ticket/create/', ticket.views.ticket_upload, name='create_ticket'),
+    path('ticket/<int:id>/update/', ticket.views.ticket_update, name='update_ticket'),
+    path('ticket/<int:id>/delete/', ticket.views.ticket_delete, name='delete_ticket'),
+    path('review/add/', review.views.review_upload, name='create_review'),
+    path('review/<int:id>/update/', review.views.review_update, name='update_review'),
+    path('review/<int:id>/delete/', review.views.review_delete, name='delete_review'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

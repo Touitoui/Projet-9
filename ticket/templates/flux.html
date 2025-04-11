@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-4">
+        <div class="mb-3">
+            <a href="{% url 'create_ticket' %}" class="btn btn-primary">Créer un ticket</a>
+            <a href="{% url 'create_review' %}" class="btn btn-primary">Créer une critique</a>
+        </div>
+        <h2 class="mb-4">Tickets</h2>
+        {% for item in ticketsreviews %}
+            {% if item.headline %}
+                {% include "review.html" %}
+            {% else %}
+                {% include "ticket.html" %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}

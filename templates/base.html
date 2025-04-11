@@ -1,12 +1,44 @@
 <html>
     <head>
         <title>LITRevu</title>
+          {% load bootstrap5 %}
+          {% bootstrap_css %}
+          {% bootstrap_javascript %}
     </head>
     <body>
-    <h1><a href="/">LITRevu</a></h1>
-        {% block content %}{% endblock content %}
-        {% if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{request.user}}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
-        {% endif %}
+        <div class="container">
+            <ul class="nav bg-info">
+                <li>
+                    <h1>LITRevu</h1>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link link-light" href="/">HOME</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link link-light"  href="">Something else</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <p>Vous êtes connecté en tant que {{request.user}}.</p>
+                </li>
+                <li>
+                    <a class="nav-link link-light"  href="{% url 'logout' %}">Se déconnecter</a>
+                </li>
+                {% else %}
+                    {% if not user.is_authenticated %}
+                        <li>
+                            <a class="nav-link link-light"  href="/login">Se connecter</a>
+                        </li>
+                        <li>
+                            <a class="nav-link link-light"  href="/signup ">S'inscrire</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                </li>
+
+            </ul>
+            {% block content %}{% endblock content %}
+
+        </div>
     </body>
 </html>

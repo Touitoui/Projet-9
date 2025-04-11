@@ -1,0 +1,33 @@
+{% block content %}
+    <!-- Display ticket -->
+    {% if item.ticket %}
+        <div class="card mb-4">
+            <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <div><small class="text-muted">Ticket - {{ item.ticket.user }}</small></div>
+                <div><small class="text-muted">{{ item.ticket.time_created|date:"H:i, d F Y" }}</small></div>
+            </div>
+            <h5 class="card-title">{{ item.ticket.title }}</h5>
+            {% if item.ticket.image %}
+                <img src="{{ item.ticket.image.url }}" class="img-fluid" style="max-height: 300px; max-width: 300px; object-fit: contain;">
+            {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="card mb-4">
+            <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <div><small class="text-muted">{% if request.user == item.user %} Vous avez {% else %} {{ item.user }} a {% endif %} demandé une critique </small></div>
+                <div><small class="text-muted">{{ item.time_created|date:"H:i, d F Y" }}</small></div>
+            </div>
+            <h5 class="card-title">{{ item.title }}</h5>
+            <p class="card-text">{{ item.description }}</p>
+            {% if item.image %}
+                <img src="{{ item.image.url }}" class="img-fluid" style="max-height: 300px; max-width: 300px; object-fit: contain;">
+            {% endif %}
+            <a href="{% url 'update_ticket' item.id %}">[Modifier]</a>
+            <a href="{% url 'delete_ticket' item.id %}">[Supprimer]</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

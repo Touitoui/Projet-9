@@ -1,0 +1,21 @@
+{% block content %}
+<!-- Display review -->
+    <div class="card mb-4">
+        <div class="card-body">
+        <div class="d-flex justify-content-between mb-2"></div>
+            <div><small class="text-muted">{% if request.user == item.user %} Vous avez {% else %} {{ item.user }} a {% endif %} publié une critique </small></div>
+            <div><small class="text-muted">{{ item.time_created|date:"H:i, d F Y" }}</small></div>
+        </div>
+        <h5 class="card-title">{{ item.headline }}</h5>
+        <div class="mb-2">
+            <small class="text-muted">Note: {{ item.rating }}/5</small>
+        </div>
+        <p class="card-text">{{ item.body }}</p>
+        
+        <!-- Display the associated ticket -->
+        {% include "ticket.html" %}
+        
+        <a href="{% url 'update_review' item.id %}">[Modifier]</a>
+        <a href="{% url 'delete_review' item.id %}">[Supprimer]</a>
+    </div>
+{% endblock content %}

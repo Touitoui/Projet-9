@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'review',
     'user_follows',
     'user',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL="user.User"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.joinpath('media/')
