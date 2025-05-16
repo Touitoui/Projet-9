@@ -49,9 +49,7 @@ def ticket_upload(request):
         form = forms.TicketForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
-            # set the uploader to the user before saving the model
             ticket.user = request.user
-            # now we can save
             ticket.save()
             return redirect('/')
     return render(request, 'forms/create_ticket.html', context={'form': form})
@@ -128,17 +126,8 @@ def add_review(request, id):
     ticket = models.Ticket.objects.get(id=id)
     form_review = forms.ReviewForm()
     if request.method == 'POST':
-        # ticket = ticket_models.Ticket()
         form_review = forms.ReviewForm(request.POST)
         if all([form_review.is_valid()]):
-            # print("post ticket")
-
-            # ticket = form_ticket.save(commit=False)
-            # ticket.user = request.user            
-            # ticket.save()
-            # print("-------")
-            # print(ticket)
-            
             review = form_review.save(commit=False)
             review.user = request.user
             review.ticket = ticket

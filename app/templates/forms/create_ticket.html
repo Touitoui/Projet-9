@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    <h2 class="text-center">Demander une critique</h2>
-        <div class="card bg-light ">
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                    <button type="submit" >Publier</button>
-                </form>
-            </div>
+    <div class="card bg-light">
+        <div class="card-body">
+            <h2 class="card-title text-center">Créer un ticket</h2>
+            <form method="post" enctype="multipart/form-data">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <div class="mb-3 text-end">
+                    <button type="submit" class="btn btn-primary">Publier</button>
+                </div>
+            </form>
         </div>
+    </div>
 {% endblock content %}

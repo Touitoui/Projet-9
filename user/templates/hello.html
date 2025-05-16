@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-    {% if user.is_authenticated %}
-        <p>{{ message }}{{request.user}}</p>
-    {% endif %}
-{% endblock content %}

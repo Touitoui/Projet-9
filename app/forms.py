@@ -64,7 +64,6 @@ class UserFollowsForm(forms.ModelForm):
                 
         try:
             followed_user = User.objects.get(username=username)
-            # followed_user = User.objects.get(username__iexact=username) #  Allow case-insensitive matching ?
         except User.DoesNotExist:
             raise forms.ValidationError("Cet utilisateur n'existe pas.")
         

@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Etes-vous sûr de vouloir supprimer : {{ review.title }} ?</h2>
     <form method="post" action="">
-        {% csrf_token %}
-        <input type="submit" value="Supprimer">
+        <div class="card bg-light">
+            <div class="card-title">
+                <h2>Etes-vous sûr de vouloir supprimer : {{ review.title }} ?</h2>
+            </div>
+            <div class="card-body">
+            {% csrf_token %}
+            <div class="mb-3 text-end">
+                <button type="submit" class="btn btn-primary">Supprimer</button>
+            </div>
+            </div>
+        </div>
     </form>
 {% endblock content %}

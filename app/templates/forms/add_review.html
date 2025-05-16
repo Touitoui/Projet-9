@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Créer une critique</h2>
-
-    <form method="post" enctype="multipart/form-data">
-        <div class="ticket-form card">
-            <div class="card-body">
-                <h3>Vous êtes en poster en répondre à</h3>
-                {% include "ticket.html" %}
-            </div>
-        </div>
-        <div class="review-form card">
-            <div class="card-body">
-                <h3>Critique</h3>
-                {{ form_review.as_p }}
-                {% csrf_token %}
-                <button type="submit" >Envoyer</button>
+    <div class="card bg-light">
+        <div class="card-body">
+            <h2 class="card-title">Créer une critique</h2>
+            <form method="post" enctype="multipart/form-data">
+                <div class="ticket-form card">
+                    <div class="card-body">
+                        <h3 class="card-title">Vous êtes en train de poster en réponse à</h3>
+                        {% include "ticket.html" %}
+                    </div>
                 </div>
-            </div>
-    </form>
+                <div class="review-form card">
+                    <div class="card-body">
+                        <h3 class="card-title">Critique</h3>
+                        {{ form_review.as_p }}
+                        {% csrf_token %}
+                        <div class="mb-3 text-end">
+                            <button type="submit" class="btn btn-primary">Publier</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
 {% endblock content %}

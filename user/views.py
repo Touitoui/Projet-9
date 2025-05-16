@@ -3,10 +3,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.conf import settings
 from . import forms
 
-def hello(request):
-    message = 'Bonjour '
-    return render(request, 'hello.html', context={'message': message})
-
 def login_page(request):
     form = forms.LoginForm()
     message = ''

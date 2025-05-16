@@ -5,7 +5,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="text-center">Inscription</h2>
+                        <h2 class="text-center">Inscrivez-vous</h2>
                     </div>
                     <div class="card-body">
                         {% if form.errors %}
@@ -18,10 +18,10 @@
                             <div class="mb-3">
                                 {{ form.as_p }}
                             </div>
-                            <div class="mb-3 d-flex justify-content-start">
-                                <a href="/" class="btn btn-primary">Retour</a>
+                            <div class="mb-3 text-end">
+                                    <a href="/" class="btn btn-primary">Retour</a>
+                                <button type="submit" class="btn btn-primary">S'inscrire</button>
                             </div>
-                            <button type="submit" class="btn btn-primary">S'inscrire</button>
                         </form>
                     </div>
                 </div>
