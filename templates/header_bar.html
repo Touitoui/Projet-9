@@ -1,0 +1,28 @@
+
+<ul class="nav bg-info align-items-center" style="height: 60px;">
+    <li class="nav-item position-absolute start-50 translate-middle-x">
+        <h1>LITRevu</h1>
+    </li>
+    <li class="ms-auto">
+        {% if user.is_authenticated %}
+            <div>
+                <ul class="nav nav-pills flex-column flex-sm-row">
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="/">Flux</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="{% url 'posts' %}">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="{% url 'follow_user' %}">Abonnements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="{% url 'logout' %}">Se déconnecter</a>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="nav-placeholder">&nbsp;</div>
+        {% endif %}
+    </li>
+</ul>
