@@ -1,0 +1,8 @@
+{% block content %}
+    <h2 class="text-center">Suivre d'autres utilisateurs</h2>
+    <form method="post" enctype="form-data">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Envoyer</button>
+    </form>
+{% endblock content %}

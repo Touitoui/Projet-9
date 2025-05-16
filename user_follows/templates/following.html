@@ -1,0 +1,18 @@
+{% block content %}
+    <h2 class="text-center">Abonnements</h2>
+
+    {% if followed_users %}
+        <ul class="followed-users-list">
+            {% for follow in followed_users %}
+                <li class="followed-user-item card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div>{{ follow.followed_user }}</div>
+                        <a href="{% url 'unfollow_user' follow.id %}" class="btn btn-sm btn-outline-danger">Désabonner</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Vous ne suivez aucun utilisateur.</p>
+    {% endif %}
+{% endblock content %}

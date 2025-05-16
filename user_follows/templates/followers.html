@@ -1,0 +1,15 @@
+{% block content %}
+    <h2 class="text-center">Abonnés</h2>
+
+    {% if followers %}
+    <ul class="followed-users-list">
+        {% for follow in followers %}
+            <li class="card">
+                {{ follow.user }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Aucun utilisateur ne vous suit.</p>
+    {% endif %}
+{% endblock content %}
