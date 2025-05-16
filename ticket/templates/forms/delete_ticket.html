@@ -2,7 +2,11 @@
 {% block content %}
     <h2>Etes-vous sûr de vouloir supprimer : {{ ticket.title }} ?</h2>
     <form method="post" action="">
-        {% csrf_token %}
-        <input type="submit" value="Supprimer">
+        <div class="card bg-light ">
+            <div class="card-body">
+                {% csrf_token %}
+                <input type="submit" value="Supprimer">
+            </div>
+        </div>
     </form>
 {% endblock content %}

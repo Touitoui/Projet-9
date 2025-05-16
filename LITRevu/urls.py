@@ -21,9 +21,11 @@ from django.conf.urls.static import static
 import ticket.views
 import review.views
 import user.views
+import user_follows.views
 
 urlpatterns = [
     path('', ticket.views.home),
+    path('posts/', ticket.views.my_posts, name='posts'),
     path('login/', user.views.login_page, name='login'),
     path('logout/', user.views.logout_user, name='logout'),
     path('signup', user.views.signup_page, name='signup'),
@@ -31,9 +33,12 @@ urlpatterns = [
     path('ticket/create/', ticket.views.ticket_upload, name='create_ticket'),
     path('ticket/<int:id>/update/', ticket.views.ticket_update, name='update_ticket'),
     path('ticket/<int:id>/delete/', ticket.views.ticket_delete, name='delete_ticket'),
-    path('review/add/', review.views.review_upload, name='create_review'),
+    path('ticket/<int:id>/add_review/', review.views.add_review, name='add_review'),
+    path('review/review_upload/', review.views.new_review_upload, name='new_review_upload'),
     path('review/<int:id>/update/', review.views.review_update, name='update_review'),
     path('review/<int:id>/delete/', review.views.review_delete, name='delete_review'),
+    path('follow_user/', user_follows.views.follow_user, name='follow_user'),
+    path('unfollow_user/<int:id>/', user_follows.views.unfollow_user, name='unfollow_user'),
 ]
 
 if settings.DEBUG:

@@ -5,9 +5,10 @@ from django.shortcuts import render
 from . import models
 from . import forms
 from ticket import forms as ticket_forms
+from ticket import models as ticket_models
 
 @login_required
-def review_upload(request):
+def new_review_upload(request):
     form_ticket = ticket_forms.TicketForm()
     form_review = forms.ReviewForm()
     if request.method == 'POST':
@@ -33,8 +34,36 @@ def review_upload(request):
         'form_review': form_review,
         'form_ticket': form_ticket,
     }
-    return render(request, 'forms/create_review.html', context=context)
+    return render(request, 'forms/new_review.html', context=context)
 
+@login_required
+def add_review(request, id):
+    ticket = ticket_models.Ticket.objects.get(id=id)
+    form_review = forms.ReviewForm()
+    if request.method == 'POST':
+        # ticket = ticket_models.Ticket()
+        form_review = forms.ReviewForm(request.POST)
+        if all([form_review.is_valid()]):
+            # print("post ticket")
+
+            # ticket = form_ticket.save(commit=False)
+            # ticket.user = request.user            
+            # ticket.save()
+            # print("-------")
+            # print(ticket)
+            
+            review = form_review.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+
+            review.save()
+            return redirect('/')
+        
+    context = {
+        'ticket': ticket,
+        'form_review': form_review,
+    }
+    return render(request, 'forms/add_review.html', context=context)
 
 @login_required
 def review_update(request, id):

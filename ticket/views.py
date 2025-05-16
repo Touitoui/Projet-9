@@ -6,24 +6,44 @@ from . import models
 from . import forms
 from review import models as review_model
 from itertools import chain
+from django.db.models import Q
+from user_follows.models import UserFollows
 
 
 
 def home(request):
     if request.user.is_authenticated:
-        reviews = review_model.Review.objects.all()
-        tickets = models.Ticket.objects.all()
+        followed_users = UserFollows.objects.filter(user=request.user).values_list('followed_user', flat=True)
+        
+        reviews = review_model.Review.objects.filter(
+            Q(user=request.user) | Q(user__in=followed_users)
+        )
+        tickets = models.Ticket.objects.filter(
+            Q(user=request.user) | Q(user__in=followed_users)
+        )
 
-        # Combine reviews and tickets into one list
-        # and sort by date (newest first)
         ticketsreviews = sorted(
             chain(reviews, tickets),
-            key=lambda item: item.time_created,  # Adjust this field name based on your model
+            key=lambda item: item.time_created,
             reverse=True
         )
-        return render(request, 'flux.html', context={'ticketsreviews': ticketsreviews})
+        return render(request, 'flux_page.html', context={'ticketsreviews': ticketsreviews})
     else:
         return redirect('login')  
+
+@login_required
+def my_posts(request):
+    if request.user.is_authenticated:
+        tickets = models.Ticket.objects.filter(user=request.user)
+        reviews = review_model.Review.objects.filter(user=request.user)
+        ticketsreviews = sorted(
+            chain(reviews, tickets),
+            key=lambda item: item.time_created,
+            reverse=True
+        )
+        return render(request, 'posts_page.html', context={'ticketsreviews': ticketsreviews})
+    else:
+        return redirect('login')
 
 @login_required
 def ticket_upload(request):
