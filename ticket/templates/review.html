@@ -1,21 +1,31 @@
 {% block content %}
-<!-- Display review -->
-    <div class="card mb-4">
+    <div class="card bg-light mb-4">
         <div class="card-body">
-        <div class="d-flex justify-content-between mb-2"></div>
-            <div><small class="text-muted">{% if request.user == item.user %} Vous avez {% else %} {{ item.user }} a {% endif %} publié une critique </small></div>
-            <div><small class="text-muted">{{ item.time_created|date:"H:i, d F Y" }}</small></div>
+            <div class="d-flex justify-content-between mb-2">
+                <div><small class="text-muted">{% if request.user == item.user %} Vous avez {% else %} {{ item.user }} a {% endif %} publié une critique </small></div>
+                <div><small class="text-muted">{{ item.time_created|date:"H:i, d F Y" }}</small></div>
+            </div>
+            <h5 class="card-title">{{ item.headline }}</h5>
+            <div class="mb-2">
+                Note: 
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= item.rating %}
+                            <i class="text-warning">★</i>
+                        {% else %}
+                            <i class="text-muted">☆</i>
+                        {% endif %}
+                    {% endfor %}
+            </div>
+            <p class="card-text">{{ item.body }}</p>
+            
+            {% include "ticket.html" %}
+            
+            {% if request.user == item.user %}
+                <div class="text-end">
+                    <a href="{% url 'update_review' item.id %}" class="btn btn-outline-primary btn-sm">Modifier</a>
+                    <a href="{% url 'delete_review' item.id %}" class="btn btn-outline-danger btn-sm">Supprimer</a>
+                </div>
+            {% endif %}
         </div>
-        <h5 class="card-title">{{ item.headline }}</h5>
-        <div class="mb-2">
-            <small class="text-muted">Note: {{ item.rating }}/5</small>
-        </div>
-        <p class="card-text">{{ item.body }}</p>
-        
-        <!-- Display the associated ticket -->
-        {% include "ticket.html" %}
-        
-        <a href="{% url 'update_review' item.id %}">[Modifier]</a>
-        <a href="{% url 'delete_review' item.id %}">[Supprimer]</a>
     </div>
 {% endblock content %}
