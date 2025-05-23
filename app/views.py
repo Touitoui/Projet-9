@@ -11,7 +11,7 @@ def home(request):
     """
     Display the home page with a feed of tickets and reviews from the user and followed users.
     If user is authenticated, shows a chronological feed of their own tickets/reviews
-    and those from users they follow. 
+    and those from users they follow.
     If not authenticated, redirects to login page.
     """
     if request.user.is_authenticated:
