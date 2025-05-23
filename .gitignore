@@ -160,3 +160,8 @@ cython_debug/
 .idea/
 /oc_instructions
 /media
+
+# Environment variables
+.env
+.env.local
+.env.production
