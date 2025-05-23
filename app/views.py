@@ -8,6 +8,12 @@ from . import forms
 
 
 def home(request):
+    """
+    Display the home page with a feed of tickets and reviews from the user and followed users.
+    If user is authenticated, shows a chronological feed of their own tickets/reviews
+    and those from users they follow. 
+    If not authenticated, redirects to login page.
+    """
     if request.user.is_authenticated:
         followed_users = models.UserFollows.objects.filter(user=request.user).values_list('followed_user', flat=True)
 
@@ -30,21 +36,20 @@ def home(request):
 
 @login_required
 def my_posts(request):
-    if request.user.is_authenticated:
-        tickets = models.Ticket.objects.filter(user=request.user)
-        reviews = models.Review.objects.filter(user=request.user)
-        ticketsreviews = sorted(
-            chain(reviews, tickets),
-            key=lambda item: item.time_created,
-            reverse=True
-        )
-        return render(request, 'posts_page.html', context={'ticketsreviews': ticketsreviews})
-    else:
-        return redirect('login')
+    """Display all posts (tickets and reviews) created by the authenticated user."""
+    tickets = models.Ticket.objects.filter(user=request.user)
+    reviews = models.Review.objects.filter(user=request.user)
+    ticketsreviews = sorted(
+        chain(reviews, tickets),
+        key=lambda item: item.time_created,
+        reverse=True
+    )
+    return render(request, 'posts_page.html', context={'ticketsreviews': ticketsreviews})
 
 
 @login_required
 def ticket_upload(request):
+    """Handle ticket creation with file upload."""
     form = forms.TicketForm()
     if request.method == 'POST':
         form = forms.TicketForm(request.POST, request.FILES)
@@ -58,6 +63,7 @@ def ticket_upload(request):
 
 @login_required
 def ticket_update(request, id):
+    """Handle ticket update with permission checks and form validation."""
     try:
         ticket = models.Ticket.objects.get(id=id)
     except models.Ticket.DoesNotExist:
@@ -81,6 +87,7 @@ def ticket_update(request, id):
 
 @login_required
 def ticket_delete(request, id):
+    """Delete a ticket if the user has permission. First call the confirmation page, then delete if user confirmed."""
     try:
         ticket = models.Ticket.objects.get(id=id)
     except models.Ticket.DoesNotExist:
@@ -97,6 +104,7 @@ def ticket_delete(request, id):
 
 @login_required
 def new_review_upload(request):
+    """Handle creation of a new review with an associated ticket."""
     form_ticket = forms.TicketForm()
     form_review = forms.ReviewForm()
     if request.method == 'POST':
@@ -127,6 +135,7 @@ def new_review_upload(request):
 
 @login_required
 def add_review(request, id_):
+    """Creates a review for an existing ticket."""
     ticket = models.Ticket.objects.get(id=id_)
     form_review = forms.ReviewForm()
     if request.method == 'POST':
@@ -148,6 +157,7 @@ def add_review(request, id_):
 
 @login_required
 def review_update(request, id_):
+    """Updates an existing review."""
     try:
         review = models.Review.objects.get(id=id_)
     except models.Review.DoesNotExist:
@@ -171,6 +181,7 @@ def review_update(request, id_):
 
 @login_required
 def review_delete(request, id_):
+    """Delete a review if the user has permission. First call the confirmation page, then delete if user confirmed."""
     try:
         review = models.Review.objects.get(id=id_)
     except models.Review.DoesNotExist:
@@ -187,6 +198,7 @@ def review_delete(request, id_):
 
 @login_required
 def follow_user(request):
+    """Handle user following functionality with form processing and display followed users and followers."""
     form = forms.UserFollowsForm()
     if request.method == 'POST':
         form = forms.UserFollowsForm(request.POST or None, user=request.user)
@@ -209,6 +221,7 @@ def follow_user(request):
 
 @login_required
 def unfollow_user(request, id_):
+    """Unfollow a user by deleting the UserFollows relationship."""
     try:
         user_follow = models.UserFollows.objects.get(id=id_)
     except models.UserFollows.DoesNotExist:

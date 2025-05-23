@@ -61,6 +61,11 @@ class UserFollowsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     def clean_followed_user(self):
+        """
+        Validates the followed_user field in the form.
+        Raises:
+            forms.ValidationError: If the user doesn't exist or if the user tries to follow themselves
+        """
         username = self.cleaned_data['followed_user']
 
         try:
