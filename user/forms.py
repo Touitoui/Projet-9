@@ -12,6 +12,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=63, label='')
     password = forms.CharField(max_length=63, widget=forms.PasswordInput, label='')
 
+
 class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

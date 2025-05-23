@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.shortcuts import render
 from itertools import chain
 from django.db.models import Q
 from . import models
@@ -11,7 +10,7 @@ from . import forms
 def home(request):
     if request.user.is_authenticated:
         followed_users = models.UserFollows.objects.filter(user=request.user).values_list('followed_user', flat=True)
-        
+
         reviews = models.Review.objects.filter(
             Q(user=request.user) | Q(user__in=followed_users)
         )
@@ -26,7 +25,8 @@ def home(request):
         )
         return render(request, 'flux_page.html', context={'ticketsreviews': ticketsreviews})
     else:
-        return redirect('login')  
+        return redirect('login')
+
 
 @login_required
 def my_posts(request):
@@ -42,6 +42,7 @@ def my_posts(request):
     else:
         return redirect('login')
 
+
 @login_required
 def ticket_upload(request):
     form = forms.TicketForm()
@@ -54,16 +55,17 @@ def ticket_upload(request):
             return redirect('/')
     return render(request, 'forms/create_ticket.html', context={'form': form})
 
+
 @login_required
 def ticket_update(request, id):
     try:
         ticket = models.Ticket.objects.get(id=id)
     except models.Ticket.DoesNotExist:
         return HttpResponse("Ticket non trouvé.", status=404)
-    
+
     if request.user != ticket.user:
         return HttpResponse("Vous n'avez pas la permission de modifier ce ticket.", status=403)
-    
+
     form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
         form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
@@ -76,16 +78,17 @@ def ticket_update(request, id):
         form = forms.TicketForm(instance=ticket)
     return render(request, 'forms/update_ticket.html', context={'form': form})
 
+
 @login_required
 def ticket_delete(request, id):
     try:
         ticket = models.Ticket.objects.get(id=id)
     except models.Ticket.DoesNotExist:
         return HttpResponse("Ticket non trouvé.", status=404)
-    
+
     if request.user != ticket.user:
         return HttpResponse("Vous n'avez pas la permission de supprimer ce ticket.", status=403)
-    
+
     if request.method == 'POST':
         ticket.delete()
         return redirect('/')
@@ -103,27 +106,28 @@ def new_review_upload(request):
             print("post ticket")
 
             ticket = form_ticket.save(commit=False)
-            ticket.user = request.user            
+            ticket.user = request.user
             ticket.save()
             print("-------")
             print(ticket)
-            
+
             review = form_review.save(commit=False)
             review.user = request.user
             review.ticket = ticket
 
             review.save()
             return redirect('/')
-        
+
     context = {
         'form_review': form_review,
         'form_ticket': form_ticket,
     }
     return render(request, 'forms/new_review.html', context=context)
 
+
 @login_required
-def add_review(request, id):
-    ticket = models.Ticket.objects.get(id=id)
+def add_review(request, id_):
+    ticket = models.Ticket.objects.get(id=id_)
     form_review = forms.ReviewForm()
     if request.method == 'POST':
         form_review = forms.ReviewForm(request.POST)
@@ -134,23 +138,24 @@ def add_review(request, id):
 
             review.save()
             return redirect('/')
-        
+
     context = {
         'ticket': ticket,
         'form_review': form_review,
     }
     return render(request, 'forms/add_review.html', context=context)
 
+
 @login_required
-def review_update(request, id):
+def review_update(request, id_):
     try:
-        review = models.Review.objects.get(id=id)
+        review = models.Review.objects.get(id=id_)
     except models.Review.DoesNotExist:
         return HttpResponse("Critique non trouvé.", status=404)
-    
+
     if request.user != review.user:
         return HttpResponse("Vous n'avez pas la permission de modifier cette critique.", status=403)
-    
+
     form = forms.ReviewForm(instance=review)
     if request.method == 'POST':
         form = forms.ReviewForm(request.POST, request.FILES, instance=review)
@@ -163,16 +168,17 @@ def review_update(request, id):
         form = forms.ReviewForm(instance=review)
     return render(request, 'forms/update_review.html', context={'form': form})
 
+
 @login_required
-def review_delete(request, id):
+def review_delete(request, id_):
     try:
-        review = models.Review.objects.get(id=id)
+        review = models.Review.objects.get(id=id_)
     except models.Review.DoesNotExist:
         return HttpResponse("Critique non trouvé.", status=404)
-    
+
     if request.user != review.user:
         return HttpResponse("Vous n'avez pas la permission de supprimer cette critique.", status=403)
-    
+
     if request.method == 'POST':
         review.delete()
         return redirect('/')
@@ -189,10 +195,10 @@ def follow_user(request):
             user_follows.user = request.user
             user_follows.save()
             return redirect('follow_user')
-    
+
     followed_users = models.UserFollows.objects.filter(user=request.user)
     followers = models.UserFollows.objects.filter(followed_user=request.user)
-    
+
     context = {
         'form': form,
         'followed_users': followed_users,
@@ -200,16 +206,17 @@ def follow_user(request):
     }
     return render(request, 'followed_user_page.html', context=context)
 
+
 @login_required
-def unfollow_user(request, id):
+def unfollow_user(request, id_):
     try:
-        user_follow = models.UserFollows.objects.get(id=id)
+        user_follow = models.UserFollows.objects.get(id=id_)
     except models.UserFollows.DoesNotExist:
         return HttpResponse("Abonnement non trouvé.", status=404)
-    
+
     if request.user != user_follow.user:
         return HttpResponse("Vous n'avez pas la permission.", status=403)
-    
+
     if request.method == 'POST':
         user_follow.delete()
         return redirect('follow_user')
